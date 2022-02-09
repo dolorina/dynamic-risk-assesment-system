@@ -28,7 +28,7 @@ model_path =  os.path.join(config['output_model_path'])
 # filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
 # model = pickle.load(filehandler)
 
-# Function for deployment
+
 def store_model_into_pickle():
     '''
     Function for deployment

@@ -37,14 +37,14 @@ def model_predictions():
     model = pickle.load(filehandler)
     X_test = testdata.drop(["corporation", "exited"], axis=1)
     X_test = X_test.values.reshape(-1, 3)
-    # y_test = testdata["exited"].values.reshape(-1, 1).ravel()
+    y_test = list(testdata["exited"].values.reshape(-1, 1).ravel())
 
     filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
     model = pickle.load(filehandler)
 
     y_pred = list(model.predict(X_test))
     assert len(y_pred)==len(testdata)
-    return y_pred 
+    return y_pred, y_test
 
 
 
