@@ -1,3 +1,9 @@
+'''
+Script that does automated reporting.
+
+Author: Marina Dolokov
+Date: February 2022
+'''
 import pickle
 from sklearn.model_selection import train_test_split
 import pandas as pd
