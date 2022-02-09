@@ -55,6 +55,7 @@ def score_model():
     f1_score = metrics.f1_score(y_pred, y_test)
 
     save_score(f1_score)
+    return f1_score
 
     
 if __name__ == '__main__':

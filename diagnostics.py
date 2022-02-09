@@ -24,7 +24,7 @@ model_path =  os.path.join(config['output_model_path'])
 
 
 
-def model_predictions():
+def model_predictions(testdata=None):
     '''
     Funciton that return predictions made by the deployed model
     Args: 
@@ -32,7 +32,8 @@ def model_predictions():
     Returns:
         y_pred (list) list with predictions
     '''
-    testdata = pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")
+    if testdata==None:
+        testdata = pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")
     filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
     model = pickle.load(filehandler)
     X_test = testdata.drop(["corporation", "exited"], axis=1)
@@ -120,12 +121,14 @@ def outdated_packages_list():
     installed = subprocess.check_output(['pip', 'list', '--outdated'])
     with open('outdated_packages.txt', 'wb') as f:
         f.write(installed)
-    # with open('outdated_packages.txt', 'r') as f:
-    #     outdated_packages = f.read()
-    # print(outdated_packages) 
+    with open('outdated_packages.txt', 'r') as f:
+        outdated_packages = f.read()
+    return outdated_packages
 
 if __name__ == '__main__':
-    model_predictions()
-    dataframe_summary()
-    execution_time()
-    outdated_packages_list()
+    # model_predictions()
+    # dataframe_summary()
+    # execution_time()
+    test = outdated_packages_list()
+    print(test)
+    print(type(test))
