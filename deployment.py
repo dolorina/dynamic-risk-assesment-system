@@ -21,7 +21,7 @@ import json
 with open('config.json','r') as f:
     config = json.load(f) 
 
-ingesteddata_path = os.path.join(config['output_folder_path'])
+dataset_csv_path = os.path.join(config['output_folder_path'])
 prod_deployment_path = os.path.join(config['prod_deployment_path']) 
 model_path =  os.path.join(config['output_model_path']) 
 
@@ -39,7 +39,7 @@ def store_model_into_pickle():
     
     shutil.copy(model_path + "/trainedmodel.pkl", prod_deployment_path)
     shutil.copy(model_path + "/latestscore.txt", prod_deployment_path)
-    shutil.copy(ingesteddata_path + "/ingestedfiles.txt", prod_deployment_path)
+    shutil.copy(dataset_csv_path + "/ingestedfiles.txt", prod_deployment_path)
 
 
 if __name__ == '__main__':
