@@ -1,3 +1,9 @@
+'''
+Script that copies the trained model, the latest score and the record file for the ingested data into production environment 
+
+Author: Marina Dolokov
+Date: February 2022
+'''
 from flask import Flask, session, jsonify, request
 import pandas as pd
 import numpy as np
