@@ -26,7 +26,7 @@ model_path = os.path.join(config['output_model_path'])
 
 # Function for training the model
 def train_model():
-
+    
     # Reading in finaldata.csv using pandas 
     data = pd.read_csv(os.getcwd() + "/" + dataset_csv_path + "/finaldata.csv")
     X = data.drop(["corporation", "exited"], axis=1)
@@ -46,7 +46,7 @@ def train_model():
     # Writing trained model to model_path in the file trainedmodel.pkl
     filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "wb")
     pickle.dump(model, filehandler)
-    
+
 
 if __name__ == '__main__':
     train_model()

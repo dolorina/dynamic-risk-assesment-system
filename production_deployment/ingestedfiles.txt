@@ -1,0 +1,2 @@
+['practicedata' 'dataset1.csv' '17' '2022/2/8']
+['practicedata' 'dataset2.csv' '19' '2022/2/8']
