@@ -7,5 +7,6 @@ pip           21.2.4  22.0.3 wheel
 pyparsing     3.0.4   3.0.7  wheel
 scipy         1.7.3   1.8.0  wheel
 setuptools    58.0.4  60.8.2 wheel
+starlette     0.17.1  0.18.0 wheel
 threadpoolctl 2.2.0   3.1.0  wheel
 Werkzeug      2.0.2   2.0.3  wheel

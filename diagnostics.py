@@ -24,7 +24,7 @@ model_path =  os.path.join(config['output_model_path'])
 
 
 
-def model_predictions(testdata=None):
+def model_predictions(testdata=pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")):
     '''
     Funciton that return predictions made by the deployed model
     Args: 
@@ -32,8 +32,6 @@ def model_predictions(testdata=None):
     Returns:
         y_pred (list) list with predictions
     '''
-    if testdata==None:
-        testdata = pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")
     filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
     model = pickle.load(filehandler)
     X_test = testdata.drop(["corporation", "exited"], axis=1)
@@ -130,5 +128,3 @@ if __name__ == '__main__':
     # dataframe_summary()
     # execution_time()
     test = outdated_packages_list()
-    print(test)
-    print(type(test))
