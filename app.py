@@ -1,12 +1,6 @@
-import statistics
-import string
 from flask import Flask, session, jsonify, request
 import pandas as pd
 import numpy as np
-import pickle
-# import create_prediction_model
-# import diagnosis 
-# import predict_exited_from_saved_model
 import json
 import os
 
@@ -14,13 +8,10 @@ from diagnostics import model_predictions, dataframe_summary, count_missing_data
 from scoring import score_model
 
 
-
 with open('config.json','r') as f:
     config = json.load(f) 
 
 model_path =  os.path.join(config['output_model_path']) 
-
-
 # prediction_model = None
 
 # Set up variables for use in script
@@ -28,41 +19,37 @@ app = Flask(__name__)
 app.secret_key = '1652d576-484a-49fd-913a-6879acfa6ba4'
 
 
-
 # Prediction Endpoint
-@app.route("/prediction/", methods=['POST','OPTIONS'])
+@app.route("/prediction", methods=['GET'])
 def predict():   
-    filelocation = request.args.get('filelocation')     
-    dataset = filelocation # + "/finaldata.csv"
+    filelocation = request.args.get('filelocation')
+    dataset = pd.read_csv(filelocation)   
     y_pred, _ = model_predictions(dataset)
-    return y_pred 
-
+    string_ypred = str(y_pred)
+    return string_ypred
 
 
 # Scoring Endpoint
-@app.route("/scoring/", methods=['GET','OPTIONS'])
+@app.route("/scoring", methods=['GET'])
 def score(): 
-    f1_score = score_model()       
-    return f1_score 
-
+    f1_score = str(score_model())
+    return f1_score
 
 
 # Summary Statistics Endpoint
-@app.route("/summarystats/", methods=['GET','OPTIONS'])
+@app.route("/summarystats", methods=['GET'])
 def summarize():        
-    statistics = dataframe_summary()
+    statistics = str(dataframe_summary())
     return statistics
 
 
-
 # Diagnostics Endpoint
-@app.route("/diagnostics/", methods=['GET','OPTIONS'])
+@app.route("/diagnostics", methods=['GET'])
 def diagnose():        
-    NA_percent = count_missing_data() 
-    time = execution_time()
-    outdated = outdated_packages_list()
-    return NA_percent, time, outdated 
-
+    NA_percent = str(count_missing_data()) 
+    time = str(execution_time())
+    outdated = str(outdated_packages_list())
+    return "NA in %: " + NA_percent + "\n" + "Execution time: " + time + "\n" + outdated 
 
 
 if __name__ == "__main__":    
