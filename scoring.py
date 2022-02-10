@@ -34,29 +34,28 @@ def save_score(f1_score):
     '''
     with open(os.getcwd() + "/" + model_path + "/latestscore.txt", "w") as f:
         f.write(str(f1_score))
+    
 
 
-
-def score_model():
+testdata = pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")
+def score_model(model, testdata=testdata):
     '''
     This function takes a trained model, loads test data and calculates a F1 score for the model relative to the test data.
     It writes the result to the latestscore.txt file    
     '''
-
-    testdata = pd.read_csv(os.getcwd() + "/" + test_data_path + "/testdata.csv")
     X_test = testdata.drop(["corporation", "exited"], axis=1)
     X_test = X_test.values.reshape(-1, 3)
     y_test = testdata["exited"].values.reshape(-1, 1).ravel()
 
-    filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
-    model = pickle.load(filehandler)
-
     y_pred = model.predict(X_test)
     f1_score = metrics.f1_score(y_pred, y_test)
-
     save_score(f1_score)
     return f1_score
 
     
 if __name__ == '__main__':
-    score_model()
+
+    filehandler = open(os.getcwd() + "/practicemodels/trainedmodel.pkl", "rb")
+    model = pickle.load(filehandler)
+
+    f1_score = score_model(model=model)

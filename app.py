@@ -1,6 +1,7 @@
 from flask import Flask, session, jsonify, request
 import pandas as pd
 import numpy as np
+import pickle
 import json
 import os
 
@@ -12,7 +13,9 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 model_path =  os.path.join(config['output_model_path']) 
-# prediction_model = None
+
+filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
+model = pickle.load(filehandler)
 
 # Set up variables for use in script
 app = Flask(__name__)
@@ -32,7 +35,7 @@ def predict():
 # Scoring Endpoint
 @app.route("/scoring", methods=['GET'])
 def score(): 
-    f1_score = str(score_model())
+    f1_score = str(score_model(model=model))
     return f1_score
 
 

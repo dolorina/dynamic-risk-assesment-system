@@ -25,12 +25,13 @@ with open('config.json','r') as f:
 model_path =  os.path.join(config['output_model_path']) 
 
 
-
-def score_model():
+# filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
+# model = pickle.load(filehandler)
+def confusion_matrix(model): # =model):
     '''
     Function for reporting: calculating a confusion matrix using the test data and the deployed model
     '''
-    y_pred, y_true = model_predictions()
+    y_pred, y_true = model_predictions(model)
     confusion_matrix = metrics.confusion_matrix(y_true, y_pred)
 
     fig = plt.figure()
@@ -44,4 +45,6 @@ def score_model():
 
 
 if __name__ == '__main__':
-    score_model()
+    filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
+    model = pickle.load(filehandler)
+    confusion_matrix(model)

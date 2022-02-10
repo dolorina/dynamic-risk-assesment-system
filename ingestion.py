@@ -6,6 +6,7 @@ Date: February 2022
 '''
 import pandas as pd
 import numpy as np
+import ast
 import os
 import json
 from datetime import datetime
@@ -29,9 +30,24 @@ def record_ingested_data(allRecords):
     Args:
         allRecords: numpy array
     '''
-    with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","w") as recordFile:
-        for rec in allRecords:
-            recordFile.write(str(rec)+"\n")    
+    filesinDir = os.listdir(os.getcwd()+ "/" + output_folder_path)
+    ingestedfiles_exist = any("ingestedfiles.txt" == file for file in filesinDir)
+    # if no existing ingestedfiles.txt file found, create one 
+    if ingestedfiles_exist == False: 
+        with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","w") as f:
+            for rec in allRecords:
+                f.write(str(rec)+"\n")
+    # if found, append new data to it
+    else:    
+        for file in filesinDir: # only look for ingestedfiles.txt, not for other files in directory
+            if file.find("ingestedfiles.txt")!=-1:
+                with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","r") as f:
+                    oldRecords = f.read()
+                    
+                with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","w") as f:    
+                    f.write(oldRecords)
+                    for rec in allRecords:
+                        f.write(str(rec)+"\n")
 
 
 
@@ -55,7 +71,7 @@ def merge_multiple_dataframe():
         # keeping record of merged datasets
         dateTimeObj = datetime.now()
         thetimenow=str(dateTimeObj.year)+ '/' +str(dateTimeObj.month)+ '/' +str(dateTimeObj.day)
-        record=[input_folder_path, file,len(df1.index),thetimenow]
+        record=[input_folder_path, file, len(df1.index),thetimenow]
         allRecords = np.append(allRecords, record)
     allRecords = np.reshape(allRecords, (-1, len(record)))
     record_ingested_data(allRecords)
