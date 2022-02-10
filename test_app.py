@@ -5,32 +5,29 @@ Author: Marina Dolokov
 Date: February 2022 
 
 '''
-from fastapi.testclient import TestClient
+import requests
+import os
 
-# Import our app from main.py.
-from app import app
 
-# Instantiate the testing client with our app.
-client = TestClient(app)
+# URL that resolves to workspace
+URL = "http://192.168.0.180:8000/"
 
 
 def test_predict():
-    r = client.get("/prediction")
+    r = requests.get(URL+ "prediction?filelocation=" + os.getcwd() + "/testdata/testdata.csv")
     assert r.status_code == 200
 
 
 def test_score():
-    r = client.get("/scoring")
+    r = requests.get(URL + "scoring")
     assert r.status_code == 200
 
 
 def test_summarize():
-    r = client.get("/summarystats")
+    r = requests.get(URL + "summarystats")
     assert r.status_code == 200
 
 
 def test_diagnose():
-    r = client.get("/diagnostics")
+    r = requests.get(URL + "diagnostics")
     assert r.status_code == 200
-
-    
