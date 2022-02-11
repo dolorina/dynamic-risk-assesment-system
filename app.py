@@ -13,8 +13,9 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 model_path =  os.path.join(config['output_model_path']) 
+prod_dep_path =  os.path.join(config['prod_deployment_path']) 
 
-filehandler = open(os.getcwd() + "/" + model_path + "/trainedmodel.pkl", "rb")
+filehandler = open(os.getcwd() + "/" + prod_dep_path + "/trainedmodel.pkl", "rb")
 model = pickle.load(filehandler)
 
 # Set up variables for use in script
@@ -27,7 +28,7 @@ app.secret_key = '1652d576-484a-49fd-913a-6879acfa6ba4'
 def predict():   
     filelocation = request.args.get('filelocation')
     dataset = pd.read_csv(filelocation)   
-    y_pred, _ = model_predictions(dataset)
+    y_pred, _ = model_predictions(model=model, testdata=dataset)
     string_ypred = str(y_pred)
     return string_ypred
 

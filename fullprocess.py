@@ -1,3 +1,13 @@
+'''
+Script that fully automates the whole machine learning pipeline: 
+- checking for new data
+- checking for model drift
+- if model drift appeard: retraining and redepoying
+Author: Marina Dolokov
+Date: February
+'''
+
+#!/home/marina/anaconda3/envs/dynamic-risk-assessment/bin/python3.8
 from asyncio import subprocess
 from doctest import OutputChecker
 import pickle
@@ -42,7 +52,6 @@ for newFile in newFilenames:
     df = df.append(df)
 newData = df.drop_duplicates()
 
-
 # 1. Decision whether to proceed: proceed, if new data was found. 
 if found_new_data==True: 
     merge_multiple_dataframe()
@@ -52,7 +61,7 @@ if found_new_data==True:
     y_pred, _ = model_predictions(model=model_latest, testdata=Data) # , testdata=newData)
     f1_current = score_model(model=model_latest, testdata=Data) # testdata=newData)
     # raw comparison test
-    model_drift_occured = (np.max(f1_latest) > f1_current)
+    model_drift_occured = (np.max(f1_latest) > f1_current) # >!!
     print("model drift occured: ", model_drift_occured, f1_latest, f1_current)
 
     # 2. Decision whether to proceed: proceed, if model drift was found. 

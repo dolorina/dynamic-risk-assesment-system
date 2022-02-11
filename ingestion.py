@@ -40,18 +40,19 @@ def record_ingested_data(allRecords):
     # if found, append new data to it
     else:    
         for file in filesinDir: # only look for ingestedfiles.txt, not for other files in directory
-            if file.find("ingestedfiles.txt")!=-1:
+            # make sure not to double save the file names 
+            not_existing_filename = any(file!= rec[1] for rec in allRecords)
+            if file.find("ingestedfiles.txt")!=-1 and not_existing_filename:
                 with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","r") as f:
                     oldRecords = f.read()
-                    
                 with open(os.getcwd()+ "/" + output_folder_path + "/" + "ingestedfiles.txt","w") as f:    
-                    f.write(oldRecords)
+                    f.write(oldRecords + "\n")
                     for rec in allRecords:
-                        f.write(str(rec)+"\n")
+                        f.write(str(rec) + "\n")
 
 
 
-def merge_multiple_dataframe():
+def merge_multiple_dataframe(new_data_found=True):
     '''
     Function for data ingestion: checks for datasets, complies them together and writes them to an output file
     '''
@@ -74,6 +75,7 @@ def merge_multiple_dataframe():
         record=[input_folder_path, file, len(df1.index),thetimenow]
         allRecords = np.append(allRecords, record)
     allRecords = np.reshape(allRecords, (-1, len(record)))
+    
     record_ingested_data(allRecords)
 
     # drop duplicates in merged dataframe and write the final dataframe to an output csv file   
